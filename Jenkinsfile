@@ -16,10 +16,8 @@ pipeline {
     }
 
     stage('Build image') {
-      steps{
-        script {
-          dockerImage = docker.build dockerimagename
-        }
+      steps {
+       sh 'docker image build -t vellarLa/hello .'
       }
     }
 
