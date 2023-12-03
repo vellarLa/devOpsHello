@@ -28,7 +28,6 @@ pipeline {
       steps{
          git 'https://github.com/vellarLa/devOpsHello'
         }
-      }
     }
 
     stage('Deploying container to Kubernetes') {
