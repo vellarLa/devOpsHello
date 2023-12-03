@@ -17,7 +17,9 @@ pipeline {
 
     stage('Build image') {
       steps {
-        git 'https://github.com/vellarLa/devOpsHello'
+        script {
+          dockerImage = docker.build dockerimagename
+        }
       }
     }
 
@@ -25,14 +27,19 @@ pipeline {
       environment {
                registryCredential = 'dockerhub-credentials'
            }
-      steps{
-         git 'https://github.com/vellarLa/devOpsHello'
+      steps {
+         script {
+          docker.withRegistry( 'https://registry.hub.docker.com', registryCredential ) {
+            dockerImage.push("latest")
+          }
         }
     }
 
     stage('Deploying container to Kubernetes') {
       steps {
-         git 'https://github.com/vellarLa/devOpsHello'
+        script {
+          kubernetesDeploy(configs: "hello-app-deployment.yaml", "hello-app-service.yaml")
+        }
       }
     }
 
